@@ -18,14 +18,18 @@
             font-family: 'Montserrat', Arial, sans-serif;
             background-color: #f5f5f5;
             display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
         .game-container {
             width: 600px;
-            margin: auto;
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
         }
         .game-screen {
             position: relative;
@@ -47,11 +51,26 @@
             cursor: pointer;
         }
         .sidebar {
-            width: 200px;
+            width: 250px;
             background-color: #231f87;
             color: white;
             padding: 20px;
             box-sizing: border-box;
+            text-align: center;
+        }
+        .sidebar .stats {
+            margin-bottom: 20px;
+            display: flex;
+        }
+        .sidebar .stats p {
+            margin-right: 10px;
+            font-size: 0.8em;
+            color: rgb(199, 217, 61);
+        }
+        .sidebar .stats span {
+            display: block;
+            color: white;
+            font-weight: bold;
         }
         .shop-item {
             margin-bottom: 20px;
@@ -60,21 +79,46 @@
             margin: 0;
             display: flex;
             align-items: center;
+            justify-content: center;
+        }
+        .shop-item h3 span {
+            margin-right: 10px;
         }
         .shop-item h3 img {
-            margin-right: 10px;
+            margin-left: 10px;
         }
         .shop-item p {
             margin: 5px 0;
         }
-        .shop-item button {
-            width: 100%;
-            padding: 10px;
-            font-size: 14px;
-            cursor: pointer;
+        .shop-item .description {
+            font-weight: bold;
+            font-size: 0.9em;
         }
-        .stats, .ranking {
-            margin-top: 20px;
+        .shop-item .details {
+            font-size: 0.8em;
+        }
+        .shop-item .cost {
+            font-size: 1em;
+            font-weight: normal;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .shop-item .cost img {
+            margin-left: 5px;
+        }
+        .shop-item button {
+            height: 35px;
+            width: 30%;
+            padding: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            background-color: rgb(240, 55, 141);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
         }
         .progress-bar {
             width: 100%;
@@ -111,39 +155,43 @@
 </head>
 <body>
     <div class="sidebar">
+        <div class="stats">
+            <p>Faps per second: <span id="fps">0</span></p>
+            <p>Faps per click: <span id="total-click-value">1</span></p>
+        </div>
         <div class="shop-item">
-            <h3><img src="lube_icon.png" alt="Lube Icon"> Lube</h3>
-            <p>Placeholder text for Lube.</p>
-            <p>Faps per click: <span id="lube-click-value">2</span></p>
-            <p>Cost: <span id="lube-cost">6</span> ⭐</p>
+            <h3><span>Lube</span> <img src="ranked/lube.svg" alt="Lube Icon"></h3>
+            <p class="description">MAKE IT SLICKER!</p>
+            <p class="details">Faps per click: <span id="lube-click-value">2</span></p>
+            <p class="cost"><span id="lube-cost">6</span> <img src="ranked/star.svg" alt="Star Icon"></p>
             <button id="lube-button" onclick="buyUpgradeLube()">Buy</button>
         </div>
         <div class="shop-item">
-            <h3><img src="poster_icon.png" alt="Poster Icon"> Poster</h3>
-            <p>Placeholder text for Poster.</p>
-            <p>Faps per second: <span id="poster-fps">6</span></p>
-            <p>Cost: <span id="poster-cost">51</span> ⭐</p>
+            <h3><span>Poster</span> <img src="ranked/poster.svg" alt="Poster Icon"></h3>
+            <p class="description">ENJOY THE VIEW!</p>
+            <p class="details">Faps per second: <span id="poster-fps">6</span></p>
+            <p class="cost"><span id="poster-cost">51</span> <img src="ranked/star.svg" alt="Star Icon"></p>
             <button id="poster-button" onclick="buyUpgradePoster()">Buy</button>
         </div>
         <div class="shop-item">
-            <h3><img src="private_show_icon.png" alt="Private Show Icon"> Private Show</h3>
-            <p>Placeholder text for Private Show.</p>
-            <p>Faps per second: <span id="private-show-fps">75</span></p>
-            <p>Cost: <span id="private-show-cost">1050</span> ⭐</p>
-            <button id="private-show-button" onclick="buyUpgradePrivateShow()">Buy</button>
-        </div>
-        <div class="shop-item">
-            <h3><img src="magazine_icon.png" alt="Magazine Icon"> Magazine</h3>
-            <p>Placeholder text for Magazine.</p>
-            <p>Faps per second: <span id="magazine-fps">21</span></p>
-            <p>Cost: <span id="magazine-cost">249</span> ⭐</p>
+            <h3><span>Magazine</span> <img src="ranked/magazine.svg" alt="Magazine Icon"></h3>
+            <p class="description">LOOK AT THESE HOT CHICKS!</p>
+            <p class="details">Faps per second: <span id="magazine-fps">21</span></p>
+            <p class="cost"><span id="magazine-cost">249</span> <img src="ranked/star.svg" alt="Star Icon"></p>
             <button id="magazine-button" onclick="buyUpgradeMagazine()">Buy</button>
         </div>
         <div class="shop-item">
-            <h3><img src="cam_to_cam_icon.png" alt="Cam-to-Cam Icon"> Cam-to-Cam</h3>
-            <p>Placeholder text for Cam-to-Cam.</p>
-            <p>Faps per second: <span id="cam-to-cam-fps">250</span></p>
-            <p>Cost: <span id="cam-to-cam-cost">5000</span> ⭐</p>
+            <h3><span>Private Show</span> <img src="ranked/privateshow.svg" alt="Private Show Icon"></h3>
+            <p class="description">GO PRIVATE ON JERKMATE!</p>
+            <p class="details">Faps per second: <span id="private-show-fps">75</span></p>
+            <p class="cost"><span id="private-show-cost">1050</span> <img src="ranked/star.svg" alt="Star Icon"></p>
+            <button id="private-show-button" onclick="buyUpgradePrivateShow()">Buy</button>
+        </div>
+        <div class="shop-item">
+            <h3><span>Cam-to-Cam</span> <img src="ranked/camtocam.svg" alt="Cam-to-Cam Icon"></h3>
+            <p class="description">MAKE A CAM GIRL WATCH</p>
+            <p class="details">Faps per second: <span id="cam-to-cam-fps">250</span></p>
+            <p class="cost"><span id="cam-to-cam-cost">5000</span> <img src="ranked/star.svg" alt="Star Icon"></p>
             <button id="cam-to-cam-button" onclick="buyUpgradeCamToCam()">Buy</button>
         </div>
     </div>
@@ -165,8 +213,6 @@
         </div>
         <div class="stats">
             <p>Score: <span id="score">0</span></p>
-            <p>Faps per second: <span id="fps">0</span></p>
-            <p>Total faps per click: <span id="total-click-value">1</span></p>
         </div>
         <div class="ranking">
             <p>Ranks:</p>
