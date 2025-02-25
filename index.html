@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jerkmate Ranked Clicker</title>
+    <style>
+        @font-face {
+            font-family: 'Montserrat';
+            font-style: normal;
+            font-weight: 400 900;
+            font-display: swap;
+            src: url(/fonts/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2) format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        body {
+            text-align: center;
+            font-family: 'Montserrat', Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+        }
+        .game-container {
+            width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .game-screen {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background-image: url('game_background.png');
+            background-size: cover;
+            border-radius: 10px;
+        }
+        .click-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100px;
+            height: 100px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #231f87;
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .shop-item {
+            margin-bottom: 20px;
+        }
+        .shop-item h3 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+        .shop-item h3 img {
+            margin-right: 10px;
+        }
+        .shop-item p {
+            margin: 5px 0;
+        }
+        .shop-item button {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .stats, .ranking {
+            margin-top: 20px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: rgb(105, 45, 224);
+            margin-bottom: 10px;
+            border-radius: 20px;
+            border: 4px solid rgb(105, 45, 224);
+            position: relative;
+        }
+        .progress {
+            height: 100%;
+            width: 0%;
+            background-color: rgb(34, 210, 230);
+            border-radius: 20px;
+        }
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            top: 0;
+            left: 0;
+            line-height: 20px; /* Match the height of the progress bar */
+        }
+        .stamina {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="shop-item">
+            <h3><img src="lube_icon.png" alt="Lube Icon"> Lube</h3>
+            <p>Placeholder text for Lube.</p>
+            <p>Faps per click: <span id="lube-click-value">2</span></p>
+            <p>Cost: <span id="lube-cost">6</span> ⭐</p>
+            <button id="lube-button" onclick="buyUpgradeLube()">Buy</button>
+        </div>
+        <div class="shop-item">
+            <h3><img src="poster_icon.png" alt="Poster Icon"> Poster</h3>
+            <p>Placeholder text for Poster.</p>
+            <p>Faps per second: <span id="poster-fps">6</span></p>
+            <p>Cost: <span id="poster-cost">51</span> ⭐</p>
+            <button id="poster-button" onclick="buyUpgradePoster()">Buy</button>
+        </div>
+        <div class="shop-item">
+            <h3><img src="private_show_icon.png" alt="Private Show Icon"> Private Show</h3>
+            <p>Placeholder text for Private Show.</p>
+            <p>Faps per second: <span id="private-show-fps">75</span></p>
+            <p>Cost: <span id="private-show-cost">1050</span> ⭐</p>
+            <button id="private-show-button" onclick="buyUpgradePrivateShow()">Buy</button>
+        </div>
+        <div class="shop-item">
+            <h3><img src="magazine_icon.png" alt="Magazine Icon"> Magazine</h3>
+            <p>Placeholder text for Magazine.</p>
+            <p>Faps per second: <span id="magazine-fps">21</span></p>
+            <p>Cost: <span id="magazine-cost">249</span> ⭐</p>
+            <button id="magazine-button" onclick="buyUpgradeMagazine()">Buy</button>
+        </div>
+        <div class="shop-item">
+            <h3><img src="cam_to_cam_icon.png" alt="Cam-to-Cam Icon"> Cam-to-Cam</h3>
+            <p>Placeholder text for Cam-to-Cam.</p>
+            <p>Faps per second: <span id="cam-to-cam-fps">250</span></p>
+            <p>Cost: <span id="cam-to-cam-cost">5000</span> ⭐</p>
+            <button id="cam-to-cam-button" onclick="buyUpgradeCamToCam()">Buy</button>
+        </div>
+    </div>
+    <div class="game-container">
+        <h1>FAP! SHARE! WIN!</h1>
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+            <div class="progress-text"><span id="progress-count">0</span>/<span id="progress-max">13</span></div>
+        </div>
+        <div class="game-screen">
+            <button class="click-button" onclick="clickAction()"></button>
+            <p class="stamina">Stamina Level: <span id="stamina-level">1</span> (<span id="stamina-count">0</span>/10)</p>
+        </div>
+        <p>SHARE YOUR SCORE AND GET A CHANCE TO WIN!</p>
+        <p>Your Level: <span id="rank">Unranked</span></p>
+        <div class="button-container">
+            <button class="join-button">Join Our Ranks</button>
+            <button class="restart-button" onclick="restartGame()">Restart</button>
+        </div>
+        <div class="stats">
+            <p>Score: <span id="score">0</span></p>
+            <p>Faps per second: <span id="fps">0</span></p>
+            <p>Total faps per click: <span id="total-click-value">1</span></p>
+        </div>
+        <div class="ranking">
+            <p>Ranks:</p>
+            <ul>
+                <li>Unranked</li>
+                <li>Bronze Beater</li>
+                <li>Silver Stroker</li>
+                <li>Golden Gooner</li>
+                <li>Emerald Edger</li>
+                <li>Platinum Puller</li>
+                <li>Grandmaster Baiter</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        let score = 0;
+        let clickValue = 1;
+        let autoFap = 0;
+        let staminaLevel = 1;
+        let staminaCount = 0;
+        let progress = 0;
+        let progressMax = 13;
+        let lubeCost = 6;
+        let lubeClickValue = 2;
+        let posterCost = 51;
+        let posterFps = 6;
+        let privateShowCost = 1050;
+        let privateShowFps = 75;
+        let magazineCost = 249;
+        let magazineFps = 21;
+        let camToCamCost = 5000;
+        let camToCamFps = 250;
+
+        function formatNumber(num) {
+            if (num >= 1e12) return (num / 1e12).toFixed(2) + 'T';
+            if (num >= 1e9) return (num / 1e9).toFixed(2) + 'B';
+            if (num >= 1e6) return (num / 1e6).toFixed(2) + 'M';
+            if (num >= 1e3) return (num / 1e3).toFixed(2) + 'K';
+            return num;
+        }
+
+        function clickAction() {
+            progress += clickValue;
+            if (progress >= progressMax) {
+                progress -= progressMax;
+                staminaCount++;
+                score += staminaLevel;
+                if (staminaCount >= 10) {
+                    staminaCount = 0;
+                    staminaLevel++;
+                    progressMax += 10; // Increase max progress when stamina level increases
+                }
+            }
+            updateGame();
+        }
+
+        function buyUpgrade(type, cost, fpsIncrease) {
+            if (score >= cost) {
+                score -= cost;
+                autoFap += fpsIncrease;
+                updateGame();
+            }
+        }
+
+        function buyUpgradeLube() {
+            if (score >= lubeCost) {
+                score -= lubeCost;
+                clickValue += lubeClickValue;
+                lubeCost += 3;
+                document.getElementById('lube-click-value').innerText = lubeClickValue;
+                document.getElementById('lube-cost').innerText = formatNumber(lubeCost);
+                updateGame();
+            }
+        }
+
+        function buyUpgradePoster() {
+            if (score >= posterCost) {
+                score -= posterCost;
+                autoFap += posterFps;
+                posterCost = Math.ceil(posterCost * 1.25);
+                posterFps += Math.floor(posterFps * 0.2) + 1; // Increase fps by 20% + 1
+                document.getElementById('poster-fps').innerText = posterFps;
+                document.getElementById('poster-cost').innerText = formatNumber(posterCost);
+                updateGame();
+            }
+        }
+
+        function buyUpgradePrivateShow() {
+            if (score >= privateShowCost) {
+                score -= privateShowCost;
+                autoFap += privateShowFps;
+                privateShowCost = Math.ceil(privateShowCost * 1.25);
+                privateShowFps += Math.floor(privateShowFps * 1.1) + 1; // Increase fps by 110% + 1
+                document.getElementById('private-show-fps').innerText = privateShowFps;
+                document.getElementById('private-show-cost').innerText = formatNumber(privateShowCost);
+                updateGame();
+            }
+        }
+
+        function buyUpgradeMagazine() {
+            if (score >= magazineCost) {
+                score -= magazineCost;
+                autoFap += magazineFps;
+                magazineCost = Math.ceil(magazineCost * 1.25);
+                magazineFps += Math.floor(magazineFps * 1.2) + 1; // Increase fps by 20% + 1
+                document.getElementById('magazine-fps').innerText = magazineFps;
+                document.getElementById('magazine-cost').innerText = formatNumber(magazineCost);
+                updateGame();
+            }
+        }
+
+        function buyUpgradeCamToCam() {
+            if (score >= camToCamCost) {
+                score -= camToCamCost;
+                autoFap += camToCamFps;
+                camToCamCost = Math.ceil(camToCamCost * 1.25);
+                camToCamFps += Math.floor(camToCamFps * 1.1) + 1; // Increase fps by 110% + 1
+                document.getElementById('cam-to-cam-fps').innerText = camToCamFps;
+                document.getElementById('cam-to-cam-cost').innerText = formatNumber(camToCamCost);
+                updateGame();
+            }
+        }
+
+        function autoClick() {
+            score += autoFap;
+            progress += autoFap; // Increase progress with autoFap
+            if (progress >= progressMax) {
+                progress -= progressMax;
+                staminaCount++;
+                score += staminaLevel;
+                if (staminaCount >= 10) {
+                    staminaCount = 0;
+                    staminaLevel++;
+                    progressMax += 10; // Increase max progress when stamina level increases
+                }
+            }
+            updateGame();
+        }
+        setInterval(autoClick, 1000);
+
+        function updateGame() {
+            document.getElementById('score').innerText = formatNumber(score);
+            document.getElementById('fps').innerText = formatNumber(autoFap);
+            document.getElementById('progress').style.width = Math.min((progress / progressMax) * 100, 100) + '%';
+            document.getElementById('progress-count').innerText = Math.min(progress, progressMax);
+            document.getElementById('progress-max').innerText = progressMax;
+            document.getElementById('stamina-level').innerText = staminaLevel;
+            document.getElementById('stamina-count').innerText = staminaCount;
+            document.getElementById('total-click-value').innerText = formatNumber(clickValue);
+            updateRank();
+        }
+
+        function updateRank() {
+            let rank = "Unranked";
+            if (staminaLevel >= 10) rank = "Bronze Beater";
+            if (staminaLevel >= 15) rank = "Silver Stroker";
+            if (staminaLevel >= 20) rank = "Golden Gooner";
+            if (staminaLevel >= 30) rank = "Emerald Edger";
+            if (staminaLevel >= 45) rank = "Platinum Puller";
+            if (staminaLevel >= 60) rank = "Grandmaster Baiter";
+            document.getElementById('rank').innerText = rank;
+        }
+
+        function restartGame() {
+            score = 0;
+            clickValue = 1;
+            autoFap = 0;
+            staminaLevel = 1;
+            staminaCount = 0;
+            progress = 0;
+            progressMax = 13;
+            lubeCost = 6;
+            posterCost = 51;
+            posterFps = 6;
+            privateShowCost = 1050;
+            privateShowFps = 75;
+            magazineCost = 249;
+            magazineFps = 21;
+            camToCamCost = 5000;
+            camToCamFps = 250;
+            document.getElementById('lube-click-value').innerText = lubeClickValue;
+            document.getElementById('lube-cost').innerText = formatNumber(lubeCost);
+            document.getElementById('poster-fps').innerText = posterFps;
+            document.getElementById('poster-cost').innerText = formatNumber(posterCost);
+            document.getElementById('private-show-fps').innerText = privateShowFps;
+            document.getElementById('private-show-cost').innerText = formatNumber(privateShowCost);
+            document.getElementById('magazine-fps').innerText = magazineFps;
+            document.getElementById('magazine-cost').innerText = formatNumber(magazineCost);
+            document.getElementById('cam-to-cam-fps').innerText = camToCamFps;
+            document.getElementById('cam-to-cam-cost').innerText = formatNumber(camToCamCost);
+            updateGame();
+        }
+    </script>
+</body>
+</html>
