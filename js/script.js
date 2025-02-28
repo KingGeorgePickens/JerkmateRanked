@@ -241,7 +241,7 @@ function updateRank() {
         rankIcon = "grandmaster.png";
     }
     document.getElementById('rank').innerText = rank;
-    document.getElementById('rank-icon').src = `C:/Users/cweis/Downloads/ranked/web-project/${rankIcon}`;
+    document.getElementById('rank-icon').src = `${rankIcon}`;
 }
 
 function restartGame() {
