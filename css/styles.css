@@ -10,11 +10,10 @@ body {
 }
 
 .game-container {
-    width: 600px;
-    background: rgb(255, 255, 255);
+    margin-left: 320px; /* sidebar width + some spacing */
     padding: 20px;
-    border-radius: 10px;
-    text-align: center;
+    min-height: 100vh;
+    width: calc(100% - 340px); /* Adjust width based on sidebar */
 }
 
 .stamina-left {
@@ -43,8 +42,8 @@ body {
 
 .score {
     position: fixed;
-    top: 112px;
-    left: 910px;
+    top: 20px;
+    right: 20px;
     font-weight: bold;
     color: rgb(255, 255, 255);
     z-index: 10;
@@ -92,18 +91,18 @@ body {
     font-weight: bold;
     color: white;
     z-index: 3;
-    min-height: 100vh;
 }
 
 .sidebar {
-    height: 100%;
-    width: 275px;    
-    margin-right: 100px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 300px;
     background-color: #231f87;
-    color: white;
     padding: 20px;
-    box-sizing: border-box;
-    text-align: center;
+    overflow-y: auto;
+    min-height: 100vh;
 }
 
 .sidebar .stats {
