@@ -52,6 +52,8 @@ body {
     padding: 5px 10px;
     border-radius: 5px;
     pointer-events: none;
+    display: flex;
+    align-items: center;
     gap: 5px;
 }
 
