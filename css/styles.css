@@ -42,7 +42,7 @@ body {
 }
 
 .score {
-    position: absolute;
+    position: fixed;
     top: 112px;
     left: 910px;
     font-weight: bold;
@@ -92,6 +92,7 @@ body {
     font-weight: bold;
     color: white;
     z-index: 3;
+    min-height: 100vh;
 }
 
 .sidebar {
@@ -267,4 +268,20 @@ body {
     height: 100%;
     background-color: rgb(255, 255, 255);
     z-index: 2;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 250px;
+    }
+    
+    .game-container {
+        margin-left: 270px;
+        width: calc(100% - 290px);
+    }
+    
+    .score {
+        right: 10px;
+        top: 10px;
+    }
 }
